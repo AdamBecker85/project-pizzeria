@@ -158,7 +158,7 @@
     
       
     processOrder(){
-        debugger
+        
       const thisProduct = this;
         
       // covert form to object structure e.g. {sauce: ['tomato'], toppings: ['olives', 'redPeppers']}
@@ -191,27 +191,27 @@
             
           // check if there is param with a name of paramId in formData and if it includes optionId
   
-          if(formData[paramId] && formData[paramId].includes(optionId)) {
+          if(formData[paramID] && formData[paramID].includes(optionID)) {
     
-          // check if the option is not default
+            // check if the option is not default
     
             if( option.default == false ) {
       
-          // add option price to price variable
+              // add option price to price variable
           
-              thisProduct.priceElem = thisProduct.priceElem + price;
+              price += option.price;
                
             }
   
           } else {
     
-          // check if the option is default
+            // check if the option is default
     
             if( !option.default ) {
                 
-      // reduce price variable
+              // reduce price variable
                 
-              thisProduct.priceElem = thisProduct.priceElem - price;
+              price -= option.price;
                 
             }
           }    
