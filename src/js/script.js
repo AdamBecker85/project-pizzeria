@@ -220,11 +220,11 @@
           }    
           
           const optionImage = thisProduct.imageWrapper.querySelector('.' + paramID + '-' + optionID);
-          
+          const optionSelected = formData[paramID] && formData[paramID].includes(optionID);
           
           
           if (optionImage) {
-            if  ( formData[paramID] && formData[paramID].includes(optionID) ) {
+            if  ( optionSelected ) {
               optionImage.classList.add(classNames.menuProduct.imageVisible);
             }
             else {
