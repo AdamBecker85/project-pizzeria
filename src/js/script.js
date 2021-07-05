@@ -95,6 +95,7 @@
       thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
+      thisProduct.imageWrapper = select.menuProduct.imageWrapper;
       //console.log(thisProduct.priceElem);
         
       //thisProduct.accordionTrigger.addEventListener('click', function(event){});
@@ -169,7 +170,7 @@
       // set price to default price
         
       let price = thisProduct.data.price;
-        
+              
       // for every category (param)...
       //debugger
       for (let paramID in thisProduct.data.params) {
@@ -188,6 +189,8 @@
             
           const option = param.options[optionID];
           console.log(optionID,option);
+
+      
             
           // check if there is param with a name of paramId in formData and if it includes optionId
   
@@ -200,7 +203,7 @@
               // add option price to price variable
           
               price += option.price;
-               
+              
             }
   
           } else {
@@ -215,7 +218,19 @@
                 
             }
           }    
-            
+          
+          const optionImage = thisProduct.imageWrapper.querySelector('.' + paramID + '-' + optionID);
+          
+          
+          
+          if (optionImage) {
+            if  ( formData[paramID] && formData[paramID].includes(optionID) ) {
+              optionImage.classList.add(classNames.menuProduct.imageVisible);
+            }
+            else {
+              optionImage.classList.remove(classNames.menuProduct.imageVisible);
+            }
+          }
         }
       }
         
