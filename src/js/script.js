@@ -95,7 +95,7 @@
       thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
-      thisProduct.imageWrapper = select.menuProduct.imageWrapper;
+      thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
       //console.log(thisProduct.priceElem);
         
       //thisProduct.accordionTrigger.addEventListener('click', function(event){});
@@ -180,6 +180,7 @@
         const param = thisProduct.data.params[paramID];
         
         console.log(paramID,param);
+        
           
         // for every option in this category
           
@@ -221,6 +222,7 @@
           
           const optionImage = thisProduct.imageWrapper.querySelector('.' + paramID + '-' + optionID);
           const optionSelected = formData[paramID] && formData[paramID].includes(optionID);
+                                  
           
           
           if (optionImage) {
