@@ -123,7 +123,7 @@
       
     getElements(){
       const thisProduct = this;
-
+      
       thisProduct.accordionTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
       thisProduct.form = thisProduct.element.querySelector(select.menuProduct.form);
       thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
@@ -131,6 +131,7 @@
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
       thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
       thisProduct.amountWidgetElem = thisProduct.element.querySelector(select.menuProduct.amountWidget);
+      
       //console.log(thisProduct.priceElem);
         
       //thisProduct.accordionTrigger.addEventListener('click', function(event){});
@@ -335,7 +336,7 @@
 
     initActions(){
       const thisWidget = this;
-
+      
       thisWidget.input.addEventListener('change', function(){
         thisWidget.setValue(thisWidget.input.value);
       });
@@ -350,6 +351,7 @@
         event.preventDefault();
         thisWidget.setValue(thisWidget.value+1);
       });
+
     }
 
     announce(){
@@ -361,6 +363,37 @@
 
   }
 
+
+  class Cart{
+    constructor(element){
+      const thisCart = this;
+
+      thisCart.products = [];
+
+      thisCart.getElements(element);
+      thisCart.initActions();
+
+      console.log('new Cart', thisCart);
+    }
+
+    getElements(element){
+      const thisCart = this;
+
+      thisCart.dom = {};
+
+      thisCart.dom.wrapper = element;
+      thisCart.dom.toggleTrigger = element.querySelector(select.cart.toggleTrigger);
+    }
+
+    initActions(){
+      const thisCart = this;
+
+      thisCart.dom.toggleTrigger.addEventListener('click', function(){
+        thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive)
+      });
+    }
+
+  }
 
 
   const app = {
@@ -382,6 +415,14 @@
         
       thisApp.data = dataSource;
     },
+
+    initCart: function(){
+      const thisApp = this;
+
+      const cartElem = document.querySelector(select.containerOf.cart);
+      thisApp.cart = new Cart (cartElem);
+
+    },
       
     init: function(){
       const thisApp = this;
@@ -393,8 +434,11 @@
       
       thisApp.initData();
       thisApp.initMenu();
+      thisApp.initCart();
     },
   };
   
   app.init();
+
+  
 }
