@@ -188,6 +188,7 @@
       thisProduct.cartButton.addEventListener('click', function(event){
         event.preventDefault();
         thisProduct.processOrder();
+        thisProduct.addToCart();
       });
       
       //console.log('orderForm:',thisProduct);
@@ -277,6 +278,9 @@
       price *= thisProduct.amountWidget.value;
 
       // update calculated price in the HTML
+
+      thisProduct.priceSingle = thisProduct.priceElem.innerHTML;
+
       thisProduct.priceElem.innerHTML = price;        
         
       //console.log('processOrder:',thisProduct);
@@ -290,6 +294,61 @@
       thisProduct.amountWidgetElem.addEventListener('updated', function(){
         thisProduct.processOrder();
       });
+    }
+
+    addToCart(){
+      const thisProduct = this;
+
+      app.cart.add(thisProduct.prepareCartProduct());
+    }
+
+    prepareCartProduct(){
+      const thisProduct = this;
+
+      const productSummary = {
+        id: thisProduct.id,
+        name: thisProduct.data.name,
+        amount: thisProduct.amountWidget.value,
+        priceSingle: thisProduct.priceSingle,
+        price: this.priceSingle * thisProduct.amountWidget.value,
+        params: thisProduct.prepareCartProductParams(),
+      };
+
+      return productSummary;
+    }
+
+    prepareCartProductParams(){
+      const thisProduct = this;
+        
+      const formData = utils.serializeFormToObject(thisProduct.form);
+
+      const params = {};
+              
+        for (let paramID in thisProduct.data.params) {
+          
+          const param = thisProduct.data.params[paramID];
+          console.log(param);
+
+          params[paramID] = {
+    
+           label: param.label,
+           option: {}
+          }
+                 
+          for (let optionID in param.options) {
+            
+            const option = param.options[optionID];
+
+            const optionSelected = formData[paramID] && formData[paramID].includes(optionID);
+          
+            if(optionSelected) {
+              params[paramID].options = option.label; 
+            }
+          }
+        }
+      
+       
+      return params;      
     }
   }
   
@@ -389,8 +448,14 @@
       const thisCart = this;
 
       thisCart.dom.toggleTrigger.addEventListener('click', function(){
-        thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive)
+        thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
       });
+    }
+
+    add(menuProduct){
+      // const thisCart = this;
+
+      console.log('adding product', menuProduct);
     }
 
   }
