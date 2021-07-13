@@ -324,28 +324,28 @@
 
       const params = {};
               
-        for (let paramID in thisProduct.data.params) {
+      for (let paramID in thisProduct.data.params) {
           
-          const param = thisProduct.data.params[paramID];
-          console.log(param);
+        const param = thisProduct.data.params[paramID];
+        console.log(param);
 
-          params[paramID] = {
+        params[paramID] = {
     
-           label: param.label,
-           option: {}
-          }
+          label: param.label,
+          option: {}
+        };
                  
-          for (let optionID in param.options) {
+        for (let optionID in param.options) {
             
-            const option = param.options[optionID];
+          const option = param.options[optionID];
 
-            const optionSelected = formData[paramID] && formData[paramID].includes(optionID);
+          const optionSelected = formData[paramID] && formData[paramID].includes(optionID);
           
-            if(optionSelected) {
-              params[paramID].options = option.label; 
-            }
+          if(optionSelected) {
+            params[paramID].options = option.label; 
           }
         }
+      }
       
        
       return params;      
@@ -442,6 +442,7 @@
 
       thisCart.dom.wrapper = element;
       thisCart.dom.toggleTrigger = element.querySelector(select.cart.toggleTrigger);
+      thisCart.dom.productList = element.querySelector(select.cart.productList);
     }
 
     initActions(){
@@ -453,7 +454,11 @@
     }
 
     add(menuProduct){
-      // const thisCart = this;
+      const thisCart = this;
+
+      const generatedHTML = templates.cartProduct(menuProduct);
+      thisCart.element = utils.createDOMFromHTML(generatedHTML);
+      thisCart.dom.productList.appendChild(thisCart.element);
 
       console.log('adding product', menuProduct);
     }
