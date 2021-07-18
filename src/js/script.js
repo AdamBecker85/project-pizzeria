@@ -416,7 +416,9 @@
     announce(){
       const thisWidget = this;
 
-      const event = new Event('updated');
+      const event = new CustomEvent('updated', {
+        bubbles: true
+      });
       thisWidget.element.dispatchEvent(event);
     }
 
@@ -445,7 +447,7 @@
       thisCart.dom.productList = element.querySelector(select.cart.productList);
       thisCart.dom.deliveryFee = element.querySelector(select.cart.deliveryFee);
       thisCart.dom.subTotalPrice = element.querySelector(select.cart.subtotalPrice);
-      thisCart.dom.totalPrice = element.querySelector(select.cart.totalPrice);
+      thisCart.dom.totalPrice = element.querySelectorAll(select.cart.totalPrice);
       thisCart.dom.totalNumber = element.querySelector(select.cart.totalNumber);
     }
 
@@ -454,6 +456,10 @@
 
       thisCart.dom.toggleTrigger.addEventListener('click', function(){
         thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
+      });
+
+      thisCart.dom.productList.addEventListener('updated', function(){
+        thisCart.update();
       });
     }
 
@@ -476,26 +482,32 @@
       
       const thisCart = this;
 
-      const deliveryFee = settings.cart.defaultDeliveryFee;
-      const totalNumber = 0;
-      const subTotalPrice = 0;
+      let deliveryFee = settings.cart.defaultDeliveryFee;
+      let totalNumber = 0;
+      let subTotalPrice = 0;
 
       for (let product of thisCart.products){
-        thisCart.totalNumber = totalNumber + product.amount; 
-        thisCart.subTotalPrice = subTotalPrice + product.price;
+        totalNumber =  totalNumber + product.amount; 
+        subTotalPrice = subTotalPrice + product.price;
       }
 
-      if(thisCart.totalNumber == 0){
+      
+
+      if(totalNumber == 0){
         deliveryFee = 0;
         thisCart.totalPrice = 0;
       } else {
-        thisCart.totalPrice = thisCart.subTotalPrice + deliveryFee;
+        thisCart.totalPrice = subTotalPrice + deliveryFee;
       }
 
       thisCart.dom.deliveryFee.innerHTML = deliveryFee;
-      thisCart.dom.subTotalPrice.innerHTML = thisCart.subTotalPrice;
-      thisCart.dom.totalPrice.innerHTML = thisCart.subTotalPrice + deliveryFee;
-      thisCart.dom.totalNumber.innerHTML = thisCart.totalNumber;
+      thisCart.dom.subTotalPrice.innerHTML = subTotalPrice;
+      thisCart.dom.totalNumber.innerHTML = totalNumber;
+
+      for(let selector of thisCart.dom.totalPrice){
+        selector.innerHTML = subTotalPrice + deliveryFee;
+        
+      }
 
       console.log('totalNumber', totalNumber);
       console.log('subTotalPrice', subTotalPrice);
