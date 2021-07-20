@@ -493,9 +493,7 @@
       for (let product of thisCart.products){
         totalNumber =  totalNumber + product.amount; 
         subTotalPrice = subTotalPrice + product.price;
-      }
-
-      
+      }      
 
       if(totalNumber == 0){
         deliveryFee = 0;
@@ -521,7 +519,13 @@
 
     remove(cartProduct) {
       const thisCart = this;
-      
+    
+      console.log('removing', cartProduct);
+
+      let indexOfRemoving = thisCart.products.indexOf(cartProduct);
+      thisCart.products.splice(indexOfRemoving);
+      cartProduct.dom.wrapper.remove();
+      this.update();
     }
 
   }
