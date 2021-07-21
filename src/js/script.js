@@ -308,7 +308,7 @@
     }
 
     prepareCartProduct(){
-      debugger
+      
       const thisProduct = this;
 
       const productSummary = {
