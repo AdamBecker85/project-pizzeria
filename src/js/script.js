@@ -280,7 +280,7 @@
       
       // multiply price by amount
 
-      price *= thisProduct.amountWidget.value;
+      price = price * thisProduct.amountWidget.value;
 
       // update calculated price in the HTML
 
@@ -308,6 +308,7 @@
     }
 
     prepareCartProduct(){
+      debugger
       const thisProduct = this;
 
       const productSummary = {
@@ -315,7 +316,7 @@
         name: thisProduct.data.name,
         amount: thisProduct.amountWidget.value,
         priceSingle: thisProduct.priceSingle,
-        price: this.priceSingle * thisProduct.amountWidget.value,
+        price: thisProduct.priceSingle * 1,
         params: thisProduct.prepareCartProductParams(),
       };
 
