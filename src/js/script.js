@@ -455,6 +455,9 @@
       thisCart.dom.subTotalPrice = element.querySelector(select.cart.subtotalPrice);
       thisCart.dom.totalPrice = element.querySelectorAll(select.cart.totalPrice);
       thisCart.dom.totalNumber = element.querySelector(select.cart.totalNumber);
+      thisCart.dom.form = element.querySelector(select.cart.form);
+      thisCart.dom.phone = element.querySelector(select.cart.phone);
+      thisCart.dom.address = element.querySelector(select.cart.address);
     }
 
     initActions(){
@@ -470,6 +473,11 @@
 
       thisCart.dom.productList.addEventListener('remove', function(event){
         thisCart.remove(event.detail.cartProduct);
+      });
+
+      thisCart.dom.form.addEventListener('submit', function(event){
+        event.preventDefault();
+        thisCart.sendOrder();
       });
     }
 
@@ -532,6 +540,38 @@
       thisCart.products.splice(indexOfRemoving);
       cartProduct.dom.wrapper.remove();
       this.update();
+    }
+
+    sendOrder(){
+      const thisCart = this;
+
+      const url = settings.db.url + '/' + settings.db.orders;
+
+      const payload = {
+        address: thisCart.dom.address.value,
+        phone: thisCart.dom.phone.value,
+        totalPrice: thisCart.totalPrice,
+        subTotalPrice: thisCart.totalPrice - settings.cart.defaultDeliveryFee,
+        totalNumber: parseInt(thisCart.dom.totalNumber.innerHTML),
+        deliveryFee: settings.cart.defaultDeliveryFee,
+        products: [],
+      }
+
+      for(let prod of thisCart.products) {
+        payload.products.push(prod.getData());
+      }
+
+      console.log('payload', payload);
+
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      };
+      
+      fetch(url, options);
     }
 
   }
@@ -608,6 +648,23 @@
       });
 
     }
+
+    getData(){
+      const thisCartProduct = this;
+
+      const payloadSummary = {
+        id: thisCartProduct.id,
+        name: thisCartProduct.name,
+        amount: thisCartProduct.amount,
+        priceSingle: thisCartProduct.priceSingle,
+        price: thisCartProduct.price,
+        params: thisCartProduct.params,
+      }
+
+      console.log('payloadSummary',payloadSummary);
+
+      return payloadSummary;
+    };
 
   }
 
