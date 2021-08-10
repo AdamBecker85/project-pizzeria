@@ -16,20 +16,26 @@ class Booking{
   getData(){
     const thisBooking = this;
 
+    const startDateParam = settings.db.dateStartParamKey + '=' + utils.dateToStr(thisBooking.datePicker.minDate);
+    const endDateParam = settings.db.dateEndParamKey + '=' + utils.dateToStr(thisBooking.datePicker.maxDate);
+
     const params = {
       booking: [
-        settings.db.dateStartParamKey + '=' + utils.dateToStr(thisBooking.datePicker.minDate),
-        settings.db.dateEndParamKey + '=' + utils.dateToStr(thisBooking.datePicker.maxDate),
+        startDateParam,
+        endDateParam,
       ],
       eventsCurrent: [
-
+        settings.db.notRepeatParam,
+        startDateParam,
+        endDateParam,
       ],
       eventsRepeat: [
-
+        settings.db.repeatParam,
+        endDateParam,
       ],
     };
 
-    console.log('getData params', params);
+    //console.log('getData params', params);
 
     const urls = {
       booking:       settings.db.url + '/' + settings.db.booking 
@@ -40,7 +46,16 @@ class Booking{
                                      + '?' + params.eventsRepeat.join('&'),
     };
 
-    console.log('getData urls', urls);
+    //console.log('getData urls', urls);
+
+    fetch(urls.booking)
+      .then(function(bookingsResponse){
+        return bookingsResponse.json();
+      })
+      .then(function(bookings){
+        console.log(bookings);
+      });
+    
   }
 
   render(element){
@@ -64,8 +79,8 @@ class Booking{
 
     thisBooking.peopleAmount = new AmountWidget(thisBooking.dom.peopleAmount);
     thisBooking.hoursAmount = new AmountWidget(thisBooking.dom.hoursAmount);
-    thisBooking.date = new DatePicker(thisBooking.dom.date);
-    thisBooking.hour = new HourPicker(thisBooking.dom.hour);
+    thisBooking.datePicker = new DatePicker(thisBooking.dom.date);
+    thisBooking.hourPicker = new HourPicker(thisBooking.dom.hour);
 
   }
 }
