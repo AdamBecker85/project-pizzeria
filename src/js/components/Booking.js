@@ -12,7 +12,7 @@ class Booking{
     thisBooking.initWidgets();
     thisBooking.getData();
 
-    thisBooking.selectedTableData = '';
+    thisBooking.selectedTableData = 0;
   }
 
   getData(){
@@ -189,8 +189,8 @@ class Booking{
     });
 
     for (let table of thisBooking.dom.tables)
-      table.addEventListener('click', function(){
-        thisBooking.initTables();
+      table.addEventListener('click', function(event){
+        thisBooking.initTables(event);
       });
   }
 
@@ -198,18 +198,31 @@ class Booking{
     const thisBooking = this;
 
     const clickedElement = event.target;
+    
+    if(clickedElement.classList.contains('table')){
 
-    if(clickedElement.contains('table')){
-      if(clickedElement.contains('booked')){
+      if (clickedElement.classList.contains('selected')) {
+        clickedElement.classList.remove('selected');
+      } else if (clickedElement.classList.contains('booked')) {
         alert('Sorry, this table is already booked');
-      }else if (){
+      } else if (!clickedElement.classList.contains('booked')) {
+        
+        for (let table of thisBooking.dom.tables) {
+          if (table.classList.contains('selected')) {
+            table.classList.remove('selected');
+          }
+        }
 
-        thisBooking.selectedTableData = clickedElement.getAttribute('data-table');
         clickedElement.classList.add('selected');
-      }
+        
+        const tableNumber = clickedElement.getAttribute('data-table');
+        thisBooking.selectedTableData = tableNumber;
+        
+      }     
+            
     }
-
   }
+  
 }
 
 export default Booking;
