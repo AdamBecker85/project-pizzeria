@@ -13,6 +13,7 @@ class Booking{
     thisBooking.getData();
 
     thisBooking.selectedTableData = 0;
+
   }
 
   getData(){
@@ -131,6 +132,10 @@ class Booking{
 
     let allAvailable = false;
 
+    for(let table of thisBooking.dom.tables){
+      table.classList.remove(classNames.booking.selected);
+    }
+
     if(
       typeof thisBooking.booked[thisBooking.date] == 'undefined'
       ||
@@ -155,6 +160,7 @@ class Booking{
         table.classList.remove(classNames.booking.tableBooked);
       }
     }
+
   }
 
   render(element){
@@ -172,6 +178,12 @@ class Booking{
     thisBooking.dom.hour = element.querySelector(select.widgets.hourPicker.wrapper);
 
     thisBooking.dom.tables = thisBooking.dom.wrapper.querySelectorAll(select.booking.tables);
+
+    thisBooking.dom.form = element.querySelector(select.booking.form);
+    thisBooking.dom.address = element.querySelector(select.cart.address);
+    thisBooking.dom.phone = element.querySelector(select.cart.phone);
+    thisBooking.dom.starters = element.querySelectorAll(select.booking.starters);
+
 
   }
 
@@ -221,8 +233,47 @@ class Booking{
       }     
             
     }
+    
   }
-  
+
+  sendBooking(){
+
+    const thisBooking = this;
+
+    const url = settings.db.url + '/' + settings.db.booking;
+
+    const Boooking = {
+      date: thisBooking.date.value,
+      hour: thisBooking.hour.value,
+      table: thisBooking.tableNumber,
+      duration: parseInt(thisBooking.hoursAmount.value),
+      ppl: parseInt(thisBooking.peopleAmount.value),
+      starters: [],
+      phone: thisBooking.dom.phone.value,
+      address: thisBooking.dom.address.value,
+    };
+    
+    for (let starter of thisBooking.dom.starters) {   
+      if (starter.checked === true) {
+        Boooking.starters.push(starter.value);    
+      }
+    }
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(Boooking),
+    };
+
+    fetch(url, options)
+      .then(function (response) {
+        return response.json();
+      }).then(function (parsedResponse) {
+        console.log('parsedResponse', parsedResponse);
+      });
+  }
 }
 
 export default Booking;
