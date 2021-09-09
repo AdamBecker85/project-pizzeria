@@ -1,3 +1,5 @@
+// import { templates, select } from '../settings.js';
+
 // class Home {
 
 //   constructor(element) {
@@ -13,3 +15,5 @@
 //   }
 
 // }
+
+// export default Home;

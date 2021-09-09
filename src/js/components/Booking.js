@@ -11,8 +11,7 @@ class Booking{
     thisBooking.render(element);
     thisBooking.initWidgets();
     thisBooking.getData();
-    thisBooking.sendBooking();
-
+    
     thisBooking.selectedTableData = 0;
 
   }
@@ -205,6 +204,11 @@ class Booking{
       table.addEventListener('click', function(event){
         thisBooking.initTables(event);
       });
+
+    thisBooking.dom.form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      thisBooking.sendBooking();
+    });
   }
 
   initTables(event){
@@ -275,6 +279,7 @@ class Booking{
         console.log('parsedResponse', parsedResponse);
       });
   }
+
 }
 
 export default Booking;
