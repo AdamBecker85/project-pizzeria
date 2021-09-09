@@ -11,6 +11,7 @@ class Booking{
     thisBooking.render(element);
     thisBooking.initWidgets();
     thisBooking.getData();
+    thisBooking.sendBooking();
 
     thisBooking.selectedTableData = 0;
 
@@ -243,8 +244,8 @@ class Booking{
     const url = settings.db.url + '/' + settings.db.booking;
 
     const Boooking = {
-      date: thisBooking.date.value,
-      hour: thisBooking.hour.value,
+      date: thisBooking.date,
+      hour: thisBooking.hour,
       table: thisBooking.tableNumber,
       duration: parseInt(thisBooking.hoursAmount.value),
       ppl: parseInt(thisBooking.peopleAmount.value),
