@@ -2,7 +2,7 @@ import {settings, select, classNames} from './settings.js';
 import Product from './components/Product.js';
 import Cart from './components/Cart.js';
 import Booking from './components/Booking.js';
-//import Home from './components/Home.js';
+import Home from './components/Home.js';
 
 const app = {
   initBooking: function(){
@@ -132,7 +132,18 @@ const app = {
     thisApp.initData();
     thisApp.initCart();
     thisApp.initBooking();
+    thisApp.initHome();
   },
+
+  initHome(){
+    const thisApp = this;
+    
+    const homeElement = document.querySelector('.home-container');
+    
+    thisApp.home = new Home(homeElement);
+  }
 };
   
 app.init();
+
+export default app;
