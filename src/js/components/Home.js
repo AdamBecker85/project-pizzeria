@@ -11,6 +11,7 @@ class Home {
 
 
   initCarusel(){
+    // eslint-disable-next-line
     var flkty = new Flickity( '.carousel', {
       prevNextButtons: false,
       autoPlay: true,
@@ -24,11 +25,13 @@ class Home {
 
     thisHome.dom.home = document.querySelector('.order-online');
     thisHome.dom.home.addEventListener('click', function(){
-      app.activatePage('order')});
+      app.activatePage('order');
+    });
 
     thisHome.dom.booking = document.querySelector('.book-table');
     thisHome.dom.booking.addEventListener('click', function(){
-      app.activatePage('booking')});
+      app.activatePage('booking');
+    });
   }
 }
 
